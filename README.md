@@ -9,3 +9,4 @@ https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/inst
 
 # Setup Amazon CLI
 https://docs.aws.amazon.com/streams/latest/dev/setup-awscli.html
+Iam User should be created and configured using cli
