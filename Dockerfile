@@ -1,6 +1,6 @@
 FROM node:23-alpine
 
-WORKDIRE jenkins-react-ci/app
+WORKDIR jenkins-react-ci/app
 
 COPY jenkins-react-ci/package*.json ./
 
