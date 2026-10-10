@@ -50,18 +50,20 @@ pipeline {
             steps {
                 withCredentials([
                         strings(
-                            credentialsID: 'Docker_Username',
-                            variable: 'DOCKER_USER'
+                            credentialsID: "Docker_Username",
+                            variable: "DOCKER_USER"
                         ),
                         strings(
-                            credentialsID: 'Docker_Password',
-                            variable: 'DOCKER_PASS'
+                            credentialsID: "Docker_Password",
+                            variable: "DOCKER_PASS"
                         )
 
                         ]) {
                             sh '''
                                 echo "$DOCKER_PASS" | docker login -u "DOCKER_USER" --password-stdin
+
                                 docker push "${IMAGE_NAME}:${IMAGE_TAG}"
+                                
                                 docker logout
                             '''
                     }        
