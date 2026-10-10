@@ -38,22 +38,17 @@ pipeline {
         // ---------Simple NPM CI Pipeline start
         stage('Check Docker'){
             steps {
-                dir('jenkins-react-ci') {
-                    sh 'docker --version'
-                }        
+                sh 'docker --version'    
             }
         }
         stage('Docker Build'){
             steps {
-                dir('jenkins-react-ci') {
-                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
-                }        
+                sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."   
             }
         }
         stage('Push Docker Image'){
             steps {
-                dir('jenkins-react-ci') {
-                    withCredentials([
+                withCredentials([
                         strings(
                             credentialsID: 'Docker_Username',
                             variable: 'DOCKER_USER'
@@ -69,8 +64,7 @@ pipeline {
                                 docker push "${IMAGE_NAME}:${IMAGE_TAG}"
                                 docker logout
                             '''
-                    }
-                }        
+                    }        
             }
         }
     }
