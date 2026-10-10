@@ -46,7 +46,7 @@ pipeline {
         stage('Docker Build'){
             steps {
                 dir('jenkins-react-ci') {
-                    sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
+                    sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."
                 }        
             }
         }
@@ -66,9 +66,7 @@ pipeline {
                         ]) {
                             sh '''
                                 echo "$DOCKER_PASS" | docker login -u "DOCKER_USER" --password-stdin
-
                                 docker push "${IMAGE_NAME}:${IMAGE_TAG}"
-
                                 docker logout
                             '''
                     }
