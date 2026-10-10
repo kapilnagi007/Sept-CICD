@@ -55,11 +55,11 @@ pipeline {
                 dir('jenkins-react-ci') {
                     withCredentials([
                         strings(
-                            credentialsID: 'Docker_Username'
+                            credentialsID: 'Docker_Username',
                             variable: 'DOCKER_USER'
                         ),
                         strings(
-                            credentialsID: 'Docker_Password'
+                            credentialsID: 'Docker_Password',
                             variable: 'DOCKER_PASS'
                         )
 
