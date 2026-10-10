@@ -52,15 +52,20 @@ pipeline {
         }
         stage('Push Docker Image'){
             steps {
-                dir() {
+                dir('jenkins-react-ci') {
                     withCredentials([
-                        usernamePassword(
-                            username = "${}"
-                            userpasswor = "${}"
-                            )
+                        strings(
+                            credentialsID: 'Docker_Username'
+                            variable: 'DOCKER_USER'
+                        ),
+                        strings(
+                            credentialsID: 'Docker_Password'
+                            variable: 'DOCKER_PASS'
+                        )
+
                         ]) {
                             sh '''
-                                echo "$DOCKER_PASS" | docker login -u "" --password-stdin
+                                echo "$DOCKER_PASS" | docker login -u "DOCKER_USER" --password-stdin
 
                                 docker push "${IMAGE_NAME}.${IMAGE_TAG}"
 
