@@ -36,6 +36,22 @@ pipeline {
         //     }
         // }
         // ---------Simple NPM CI Pipeline start
+        
+        stage('SonarQube'){
+            steps{
+                withSonarQubeEnv('SonarQube')
+
+            }
+        }
+
+        stage('Qulaty Gate'){
+            steps{
+                timeout(time: 5, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
+                }
+            }
+        }
+
         stage('Check Docker'){
             steps {
                 sh 'docker --version'    
@@ -46,6 +62,23 @@ pipeline {
                 sh "docker build -t ${IMAGE_NAME}:${IMAGE_TAG} ."   
             }
         }
+
+        stage('Security Scan (Trivy Docker)') {
+            steps {
+                    echo "Running Trivy via Docker container..."
+                    // Note: We mount the Docker socket so Trivy can inspect the built image,
+                    // and mount a cache directory to avoid downloading the vulnerability DB every time.
+                    sh """
+                        docker run --rm \
+                        -v /var/run/docker.sock:/var/run/docker.sock \
+                        -v ${WORKSPACE}/.trivycache:/root/.cache/trivy \
+                        aquasec/trivy:latest \
+                        image --exit-code 1 --severity HIGH,CRITICAL ${IMAGE_NAME}
+                    """
+                }
+            }
+        }
+
         stage('Push Docker Image'){
             steps {
                 withCredentials([
