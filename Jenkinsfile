@@ -48,13 +48,15 @@ pipeline {
             }
         }
         stage('SonarQube'){
-            steps{
+            steps {
                 script {
                     def scannerHome = tool 'SonarScanner'
 
-                    dir('jenkins-react-ci'){
-                        withSonarQubeEnv('SonarQube'){
-                            sh "${'scannerHome'}/bin/sonar-scanner"
+                    dir('jenkins-react-ci') {
+                        withSonarQubeEnv('SonarQube') {
+                            sh """
+                                "${'scannerHome'}/bin/sonar-scanner"
+                            """
                         }
                     }
                 }
