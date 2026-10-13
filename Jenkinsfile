@@ -2,8 +2,8 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'kopilnagi/jenkins-react-ci'
-        IMAGE_TAG = '${BUILD_NUMBER}'
+        IMAGE_NAME = "kopilnagi/jenkins-react-ci"
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
     stages {
@@ -37,9 +37,16 @@ pipeline {
         // }
         // ---------Simple NPM CI Pipeline start
         
+        stage('Check Java'){
+            steps{
+                sh 'java -version'
+            }
+        }
         stage('SonarQube'){
             steps{
-                withSonarQubeEnv('SonarQube')
+                withSonarQubeEnv('SonarQube'){
+                    sh "sonar-scanner"
+                }
 
             }
         }
@@ -82,11 +89,11 @@ pipeline {
         stage('Push Docker Image'){
             steps {
                 withCredentials([
-                        strings(
+                        string(
                             credentialsID: "Docker_Username",
                             variable: "DOCKER_USER"
                         ),
-                        strings(
+                        string(
                             credentialsID: "Docker_Password",
                             variable: "DOCKER_PASS"
                         )
