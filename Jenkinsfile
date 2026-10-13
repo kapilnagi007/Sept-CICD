@@ -51,7 +51,7 @@ pipeline {
                         sh """
                             echo "Scanner Path: ${scannerHome}"
                             ls -la "${scannerHome}/bin"
-                            "${'SonarScanner'}/bin/sonar-scanner"
+                            "${'scannerHome'}/bin/sonar-scanner"
 
                         """
                     }
