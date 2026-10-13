@@ -48,12 +48,8 @@ pipeline {
                     def scannerHome = tool 'SonarScanner'
                 
                     withSonarQubeEnv('SonarQube'){
-                        sh """
-                            echo "Scanner Path: ${scannerHome}"
-                            ls -la "${scannerHome}/bin"
-                            "${'scannerHome'}/bin/sonar-scanner"
-
-                        """
+                        sh "/var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarScanner/bin/sonar-scanner"
+                        sh "\${'scannerHome'}/bin/sonar-scanner"
                     }
                 }
 
