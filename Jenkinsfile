@@ -47,8 +47,13 @@ pipeline {
                 script {
                     def scannerHome = tool 'SonarScanner'
                 
-                withSonarQubeEnv('SonarQube'){
-                    sh "${'SonarScanner'}/bin/sonar-scanner"
+                    withSonarQubeEnv('SonarQube'){
+                        sh """
+                            echo "Scanner Path: ${scannerHome}"
+                            ls -la "${scannerHome}/bin"
+                            "${'SonarScanner'}/bin/sonar-scanner"
+
+                        """
                     }
                 }
 
