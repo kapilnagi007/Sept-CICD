@@ -46,10 +46,12 @@ pipeline {
             steps{
                 script {
                     def scannerHome = tool 'SonarScanner'
-                
-                    withSonarQubeEnv('SonarQube'){
-                        sh "/var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarScanner/bin/sonar-scanner"
-                        sh "\${'scannerHome'}/bin/sonar-scanner"
+
+                    dir('jenkins-react-ci'){
+                        withSonarQubeEnv('SonarQube'){
+                            sh "/var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarScanner/bin/sonar-scanner"
+                            sh "\${'scannerHome'}/bin/sonar-scanner"
+                        }
                     }
                 }
 
