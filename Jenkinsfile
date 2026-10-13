@@ -42,6 +42,13 @@ pipeline {
                 sh 'java -version'
             }
         }
+        stage('Diagnostics') {
+            steps {
+                // Test connection to the SonarQube container/server
+                sh 'curl -I http://sonarqube:9000'
+                sh 'curl -I http://localhost:9000'
+            }
+        }
         stage('SonarQube'){
             steps{
                 script {
