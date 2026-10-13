@@ -72,20 +72,18 @@ pipeline {
 
         stage('Security Scan (Trivy Docker)') {
             steps {
-                    echo "Running Trivy via Docker container..."
-                    // Note: We mount the Docker socket so Trivy can inspect the built image,
-                    // and mount a cache directory to avoid downloading the vulnerability DB every time.
-                    sh """
-                        docker run --rm \
-                        -v /var/run/docker.sock:/var/run/docker.sock \
-                        -v ${WORKSPACE}/.trivycache:/root/.cache/trivy \
-                        aquasec/trivy:latest \
-                        image --exit-code 1 --severity HIGH,CRITICAL ${IMAGE_NAME}
-                    """
-                }
+                echo "Running Trivy via Docker container..."
+                // Note: We mount the Docker socket so Trivy can inspect the built image,
+                // and mount a cache directory to avoid downloading the vulnerability DB every time.
+                sh """
+                    docker run --rm \
+                    -v /var/run/docker.sock:/var/run/docker.sock \
+                    -v ${WORKSPACE}/.trivycache:/root/.cache/trivy \
+                    aquasec/trivy:latest \
+                    image --exit-code 1 --severity HIGH,CRITICAL ${IMAGE_NAME}
+                """
             }
         }
-
         stage('Push Docker Image'){
             steps {
                 withCredentials([
