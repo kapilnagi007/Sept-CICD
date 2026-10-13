@@ -44,8 +44,7 @@ pipeline {
         }
         stage('Diagnostics') {
             steps {
-                // Test connection to the SonarQube container/server
-                sh 'curl -I http://host.docker.internal:9000'
+                sh "curl -I http://host.docker.internal:9000"
             }
         }
         stage('SonarQube'){
@@ -55,8 +54,7 @@ pipeline {
 
                     dir('jenkins-react-ci'){
                         withSonarQubeEnv('SonarQube'){
-                            sh "/var/jenkins_home/tools/hudson.plugins.sonar.SonarRunnerInstallation/SonarScanner/bin/sonar-scanner"
-                            sh "\${'scannerHome'}/bin/sonar-scanner"
+                            sh "\"${'scannerHome'}/bin/sonar-scanner\""
                         }
                     }
                 }
