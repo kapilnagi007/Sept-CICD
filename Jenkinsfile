@@ -107,14 +107,14 @@ pipeline {
                             variable: "DOCKER_PASS"
                         )
 
-                        ]) {
-                            sh '''
-                                echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+                    ]) {
+                        sh '''
+                            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
 
-                                docker push "${IMAGE_NAME}:${IMAGE_TAG}"
-                                
-                                docker logout
-                            '''
+                            docker push "${IMAGE_NAME}:${IMAGE_TAG}"
+                            
+                            docker logout
+                        '''
                     }        
             }
         }
@@ -122,7 +122,7 @@ pipeline {
 
     post {
         success {
-            echo "Greate our first ci pipelin is succeded"
+            echo "Great our first CI pipeline is succeded"
         }
     }
 }
