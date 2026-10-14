@@ -99,11 +99,11 @@ pipeline {
             steps {
                 withCredentials([
                         string(
-                            credentialsId: "Docker_Username",
+                            credentialsID: "Docker_Username",
                             variable: "DOCKER_USER"
                         ),
                         string(
-                            credentialsId: "Docker_Password",
+                            credentialsID: "Docker_Password",
                             variable: "DOCKER_PASS"
                         )
 
@@ -123,6 +123,10 @@ pipeline {
     post {
         success {
             echo "Great our first CI pipeline is succeded"
+        }
+        
+        failure {
+            echo "Oops Your pipeline is getting"
         }
     }
 }
