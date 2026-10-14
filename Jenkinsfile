@@ -99,11 +99,11 @@ pipeline {
             steps {
                 withCredentials([
                         string(
-                            credentialsID: "Docker_Username",
+                            credentialsId: "Docker_Username",
                             variable: "DOCKER_USER"
                         ),
                         string(
-                            credentialsID: "Docker_Password",
+                            credentialsId: "Docker_Password",
                             variable: "DOCKER_PASS"
                         )
 
@@ -126,7 +126,7 @@ pipeline {
         }
         
         failure {
-            echo "Oops Your pipeline is getting"
+            echo "Oops Your pipeline is getting Failed"
         }
     }
 }
