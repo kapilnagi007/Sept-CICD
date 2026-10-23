@@ -4,6 +4,9 @@ pipeline {
     environment {
         IMAGE_NAME = "kopilnagi/jenkins-react-ci"
         IMAGE_TAG = "${BUILD_NUMBER}"
+        
+        SSH_USER = "ubuntu"
+        SSH_HOST = "NEED TO UPDATE PUBLIC IP ADDRESS"
     }
 
     stages {
@@ -114,10 +117,44 @@ pipeline {
                             docker push "${IMAGE_NAME}:${IMAGE_TAG}"
                             
                             docker logout
+
                         '''
                     }        
             }
         }
+
+        stage("Deploy to AWS EC2"){
+            steps{
+                withCredentials([
+                        string(
+                            credentialsId: "Docker_Username",
+                            variable: "DOCKER_USER"
+                        ),
+                        string(
+                            credentialsId: "Docker_Password",
+                            variable: "DOCKER_PASS"
+                        )
+
+                    ]) {
+                        sh '''
+                            echo "Logging in to Docker Hub on EC2"
+
+                            print '%s' "$DOCKER_PASS" | ssh -o StrtictHostKeyChecking = accept-new \
+                            "$SSH_USER@$SSH_HOST" \
+                            "sudo docker login -u '$DOCKER_USER' --password-stdin"
+
+                            echo "We have successfully Login and Pull the Base Image"
+
+                            ssh "$SSH_USER@$SSH_HOST"\
+                             "sudo docker pull '${IMAGE_NAME}:${IMAGE_TAG}'"
+
+                             echo "Replace the Existing Container"
+
+                        '''
+                }
+            }
+        }
+
     }
 
     post {
